@@ -16,10 +16,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigationrail.NavigationRailView;
 
 public class MainActivity extends AppCompatActivity {
 
     private Fragment fragment;
+    private BottomNavigationView bottomNavigationView;
+
+    private int ITEM_DIARIO = R.id.item_diario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,26 +36,27 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            carregaFragment(bundle);
-        }else {
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment, new DiarioFragment());
-            fragmentTransaction.commit();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, new DiarioFragment());
+        fragmentTransaction.commit();
+
+        bottomNavigationView = findViewById(R.id.navigation);
+
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setOnItemSelectedListener(navListener);
         }
-
 
     }
 
     private void carregaFragment(Bundle bundle) {
         String tipo = bundle.getString("tipo");
-        if(tipo.equals("diario")){
+        if (tipo.equals("diario")) {
             fragment = new DiarioFragment();
-        }else if(tipo.equals("calendario")){
-           ;
+        } else if (tipo.equals("calendario")) {
+            fragment = new CalendarioFragment();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -63,28 +69,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.principal_menu, menu);
         return true;
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        Bundle bundle = new Bundle();
-        Intent intent = new Intent(this, MainActivity.class);
+    private BottomNavigationView.OnItemSelectedListener navListener =
+            new BottomNavigationView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
 
-        if(id == R.id.navigation_home){
-            bundle. putString("tipo", "diario");
-            intent.putExtras(bundle);
-            this.startActivity(intent);
-            this.finish();
-            return true;
-        }else if(id == R.id.navigation_dashboard){
-            bundle. putString("tipo", "calendario");
-            intent.putExtras(bundle);
-            this.startActivity(intent);
-            this.finish();
-            return true;
-        }
+                        if(item.getItemId() == ITEM_DIARIO){
+                            selectedFragment = new DiarioFragment();
+                        }
+                    if(item.getItemId() == R.id.navigation_dashboard){
+                        selectedFragment = new CalendarioFragment();
+                    }
 
-        return super.onOptionsItemSelected(item);
-    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment, selectedFragment).commit();
+                    return true;
+                }
+            };
 }
