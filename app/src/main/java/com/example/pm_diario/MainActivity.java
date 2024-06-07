@@ -3,7 +3,11 @@ package com.example.pm_diario;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -16,12 +20,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigationrail.NavigationRailView;
 
 public class MainActivity extends AppCompatActivity {
 
     private Fragment fragment;
     private BottomNavigationView bottomNavigationView;
+    private MainActivity activity = this;
 
     private int ITEM_DIARIO = R.id.item_diario;
 
@@ -48,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
         if (bottomNavigationView != null) {
             bottomNavigationView.setOnItemSelectedListener(navListener);
         }
+
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
 
     }
 
@@ -78,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
 
-                        if(item.getItemId() == ITEM_DIARIO){
-                            selectedFragment = new DiarioFragment();
-                        }
-                    if(item.getItemId() == R.id.navigation_dashboard){
+                    if (item.getItemId() == ITEM_DIARIO) {
+                        selectedFragment = new DiarioFragment();
+                    }
+                    if (item.getItemId() == R.id.navigation_dashboard) {
                         selectedFragment = new CalendarioFragment();
                     }
 
@@ -89,4 +103,33 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    private void showPopupMenu(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_popup, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if (item.getItemId() == R.id.nota) {
+                    Intent i = new Intent(activity, NotaActivity.class);
+                    activity.startActivity(i);
+                    activity.finish();
+                    return true;
+                }
+                if (item.getItemId() == R.id.pagina) {
+                    Intent i = new Intent(activity, PaginaActivity.class);
+                    activity.startActivity(i);
+                    activity.finish();
+                    return true;
+                }
+
+                return false;
+
+            }
+        });
+        popup.show();
+    }
 }

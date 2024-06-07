@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/emoji1"
+        android:title="😀" />
+    <item
+        android:id="@+id/emoji2"
+        android:title="😂" />
+    <item
+        android:id="@+id/emoji3"
+        android:title="😍" />
+    <item
+        android:id="@+id/emoji4"
+        android:title="😎" />
+</menu>

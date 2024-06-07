@@ -8,26 +8,26 @@ import androidx.annotation.Nullable;
 
 public class GenericDao extends SQLiteOpenHelper {
     private static final String DATABASE = "DIARIO.DB";
-    private static final int DATABASE_VER = 1;
+    private static final int DATABASE_VER = 5;
 
     private static final String CREATE_TABLE_REGISTRO =
             "CREATE TABLE registro (" +
-                    "id INT NOT NULL PRIMARY KEY, " +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "data VARCHAR(10) NOT NULL, " +
-                    "emoji VARCHAR(80) NOT NULL, " +
+                    "emoji VARCHAR(1) NOT NULL, " +
                     "conteudo TEXT NOT NULL );";
 
     private static final String CREATE_TABLE_NOTA =
             "CREATE TABLE nota (" +
-                    "nota_id INT NOT NULL PRIMARY KEY, " +
-                    "titulo VARCHAR(40) NOT NULL," +
-                    "FOREIGN KEY (nota_id) REFERENCES regitro(id) );";
+                    "registro_id INTEGER PRIMARY KEY , " +
+                    "hora VARCHAR(8) NOT NULL," +
+                    "FOREIGN KEY (registro_id) REFERENCES regitro(id) );";
 
     private static final String CREATE_TABLE_PAGINA=
             "CREATE TABLE pagina (" +
-                    "pagina_id INT NOT NULL PRIMARY KEY, " +
-                    "hora VARCHAR(8)) NOT NULL," +
-                    "FOREIGN KEY (pagina_id) REFERENCES regitro(id) );";
+                    "registro_id INTEGER PRIMARY KEY, " +
+                    "titulo VARCHAR(40) NOT NULL," +
+                    "FOREIGN KEY (registro_id) REFERENCES regitro(id) );";
 
     public GenericDao(@Nullable Context context) {
         super(context, DATABASE,null, DATABASE_VER);

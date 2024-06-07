@@ -27,11 +27,16 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
     @Override
     public void insert(Nota nota) throws SQLException {
         ContentValues contextValuesRegistro = getRegistro(nota);
-        db.insert("registro",null,contextValuesRegistro);
+        long id = db.insert("registro",null,contextValuesRegistro);
 
         ContentValues contextValuesNota = getNota(nota);
+        contextValuesNota.put("registro_id",id);
         db.insert("nota",null,contextValuesNota);
     }
+
+
+
+
 
     @Override
     public void update(Nota nota) throws SQLException {
@@ -39,19 +44,19 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
         db.update("registro",contentValues,"id = "+nota.getId(),null);
 
         ContentValues contextValuesNota = getNota(nota);
-        db.update("nota",contextValuesNota,"nota_id = "+nota.getId(),null);
+        db.update("nota",contextValuesNota,"registro_id = "+nota.getId(),null);
     }
 
     @Override
     public void delete(Nota nota) throws SQLException {
-        db.delete("nota", "nota_id = "+ nota.getId(), null);
+        db.delete("nota", "registro_id = "+ nota.getId(), null);
         db.delete("registro", "id = "+ nota.getId(), null);
     }
 
     @SuppressLint("Range")
     @Override
     public Nota findById(int id) throws SQLException {
-        String query = "SELECT r.*, n.* from registro as r join nota as n on r.id = n.nota_id where id = "+id;
+        String query = "SELECT r.*, n.* from registro as r join nota as n on r.id = n.registro_id where id = "+id;
         Cursor cursor = db.rawQuery(query, null);
         Nota nota = null;
         if(cursor != null){
@@ -60,7 +65,7 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
         if(!cursor.isAfterLast()){
             nota = new Nota();
 
-            nota.setId(cursor.getInt(cursor.getColumnIndex("nota_id")));
+            nota.setId(cursor.getInt(cursor.getColumnIndex("registro_id")));
             nota.setData(LocalDate.parse(cursor.getString(cursor.getColumnIndex("data"))));
             nota.setHora(LocalTime.parse(cursor.getString(cursor.getColumnIndex("hora"))));
             nota.setEmoji(cursor.getString(cursor.getColumnIndex("emoji")));
@@ -74,7 +79,7 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
     @SuppressLint("Range")
     @Override
     public List<Nota> findAll() throws SQLException {
-        String query = "SELECT r.*, n.* from registro as r join nota as n on r.id = n.nota_id";
+        String query = "SELECT r.*, n.* from registro as r join nota as n on r.id = n.registro_id ORDER BY data DESC";
         Cursor cursor = db.rawQuery(query, null);
         List<Nota> notas = new ArrayList<>();
         if(cursor != null){
@@ -83,7 +88,7 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
         while(!cursor.isAfterLast()){
             Nota nota = new Nota();
 
-            nota.setId(cursor.getInt(cursor.getColumnIndex("nota_id")));
+            nota.setId(cursor.getInt(cursor.getColumnIndex("registro_id")));
             nota.setData(LocalDate.parse(cursor.getString(cursor.getColumnIndex("data"))));
             nota.setHora(LocalTime.parse(cursor.getString(cursor.getColumnIndex("hora"))));
             nota.setEmoji(cursor.getString(cursor.getColumnIndex("emoji")));
@@ -109,14 +114,12 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
 
     private ContentValues getNota(Nota n) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("nota_id", n.getId());
         contentValues.put("hora", n.getHora().toString());
         return contentValues;
     }
 
     private ContentValues getRegistro(Registro r) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("id", r.getId());
         contentValues.put("conteudo", r.getConteudo());
         contentValues.put("emoji", r.getEmoji());
         contentValues.put("data", r.getData().toString());

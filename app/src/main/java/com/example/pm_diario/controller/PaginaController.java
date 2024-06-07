@@ -2,9 +2,11 @@ package com.example.pm_diario.controller;
 
 import com.example.pm_diario.model.Pagina;
 import com.example.pm_diario.model.Pagina;
+import com.example.pm_diario.model.Registro;
 import com.example.pm_diario.persistence.PaginaDao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaginaController implements IController<Pagina>{
@@ -59,4 +61,5 @@ public class PaginaController implements IController<Pagina>{
         pDao.close();
         return paginas;
     }
+
 }

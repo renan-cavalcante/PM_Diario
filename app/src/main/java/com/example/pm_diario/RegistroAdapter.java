@@ -1,22 +1,24 @@
 package com.example.pm_diario;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pm_diario.model.Nota;
+import com.example.pm_diario.model.Pagina;
 import com.example.pm_diario.model.Registro;
 
 import java.util.List;
 
 public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.PersonViewHolder> {
 
-    private List<Registro> registroList;
-    private OnItemClickListener listener;
+    private final List<Registro> registroList;
+    private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -38,6 +40,15 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Person
         Registro r = registroList.get(position);
         holder.tvConteudo.setText(r.getConteudo());
         holder.tvData.setText(String.valueOf(r.getData()));
+        holder.tvEmoji.setText(r.getEmoji());
+        if(r instanceof Pagina){
+            holder.tvTitulo.setText(((Pagina) r).getTitulo());
+        }
+        if(r instanceof Nota){
+            holder.tvTitulo.setText(String.valueOf(r.getData()));
+            holder.tvTitulo.setGravity(Gravity.END);
+            holder.tvData.setText(((Nota) r).getHora().toString());
+        }
     }
 
     @Override
@@ -50,15 +61,16 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Person
         TextView tvData;
         TextView tvEmoji;
         TextView tvTitulo;
-        TextView tvHora;
 
         public PersonViewHolder(@NonNull View itemView) {
             super(itemView);
             tvConteudo = itemView.findViewById(R.id.tvConteudo);
             tvData = itemView.findViewById(R.id.tvData);
-            tvEmoji = itemView.findViewById(R.id.tvData);
+            tvEmoji = itemView.findViewById(R.id.tvEmoji);
+
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
-            tvHora = itemView.findViewById(R.id.tvHora);
+
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

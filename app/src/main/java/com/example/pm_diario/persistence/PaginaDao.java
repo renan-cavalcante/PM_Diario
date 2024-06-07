@@ -24,10 +24,12 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
     }
     @Override
     public void insert(Pagina pagina) throws SQLException {
+
         ContentValues contextValuesRegistro = getRegistro(pagina);
-        db.insert("registro",null,contextValuesRegistro);
+        long id = db.insert("registro",null,contextValuesRegistro);
 
         ContentValues contextValuesPagina = getPagina(pagina);
+        contextValuesPagina.put("registro_id",id);
         db.insert("pagina",null,contextValuesPagina);
     }
 
@@ -37,19 +39,19 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
         db.update("registro",contentValues,"id = "+pagina.getId(),null);
 
         ContentValues contextValuesPagina = getPagina(pagina);
-        db.update("pagina",contextValuesPagina,"pagina_id = "+pagina.getId(),null);
+        db.update("pagina",contextValuesPagina,"registro_id = "+pagina.getId(),null);
     }
 
     @Override
     public void delete(Pagina pagina) throws SQLException {
-        db.delete("pagina", "pagina_id = "+ pagina.getId(), null);
+        db.delete("pagina", "registro_id = "+ pagina.getId(), null);
         db.delete("registro", "id = "+ pagina.getId(), null);
     }
 
     @SuppressLint("Range")
     @Override
     public Pagina findById(int id) throws SQLException {
-        String query = "SELECT r.*, p.* from registro as r join pagina as p on r.id = p.pagina_id where id = "+id;
+        String query = "SELECT r.*, p.* from registro as r join pagina as p on r.id = p.registro_id where id = "+id;
         Cursor cursor = db.rawQuery(query, null);
         Pagina pagina = null;
         if(cursor != null){
@@ -58,7 +60,7 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
         if(!cursor.isAfterLast()){
             pagina = new Pagina();
 
-            pagina.setId(cursor.getInt(cursor.getColumnIndex("pagina_id")));
+            pagina.setId(cursor.getInt(cursor.getColumnIndex("registro_id")));
             pagina.setData(LocalDate.parse(cursor.getString(cursor.getColumnIndex("data"))));
             pagina.setTitulo(cursor.getString(cursor.getColumnIndex("titulo")));
             pagina.setEmoji(cursor.getString(cursor.getColumnIndex("emoji")));
@@ -72,7 +74,7 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
     @SuppressLint("Range")
     @Override
     public List<Pagina> findAll() throws SQLException {
-        String query = "SELECT r.*, p.* from registro as r join pagina as p on r.id = p.pagina_id";
+        String query = "SELECT r.*, p.* from registro as r join pagina as p on r.id = p.registro_id order by data DESC";
         Cursor cursor = db.rawQuery(query, null);
         List<Pagina> paginas = new ArrayList<>();
         if(cursor != null){
@@ -81,7 +83,7 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
         while(!cursor.isAfterLast()){
             Pagina pagina = new Pagina();
 
-            pagina.setId(cursor.getInt(cursor.getColumnIndex("pagina_id")));
+            pagina.setId(cursor.getInt(cursor.getColumnIndex("registro_id")));
             pagina.setData(LocalDate.parse(cursor.getString(cursor.getColumnIndex("data"))));
             pagina.setTitulo(cursor.getString(cursor.getColumnIndex("titulo")));
             pagina.setEmoji(cursor.getString(cursor.getColumnIndex("emoji")));
@@ -107,14 +109,12 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
 
     private ContentValues getPagina(Pagina p) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("pagina_id", p.getId());
         contentValues.put("titulo", p.getTitulo());
         return contentValues;
     }
 
     private ContentValues getRegistro(Registro r) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("id", r.getId());
         contentValues.put("conteudo", r.getConteudo());
         contentValues.put("emoji", r.getEmoji());
         contentValues.put("data", r.getData().toString());
