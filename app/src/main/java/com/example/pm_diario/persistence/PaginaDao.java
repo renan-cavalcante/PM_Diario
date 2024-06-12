@@ -95,6 +95,30 @@ public class PaginaDao implements IPaginaDao, ICrudDao<Pagina> {
         return paginas;
     }
 
+    @SuppressLint("Range")
+    @Override
+    public List<Pagina> findByData(String data) throws SQLException {
+        String query = "SELECT r.*, p.* from registro as r join pagina as p on r.id = p.registro_id where r.data = '"+data.trim()+"' order by data DESC";
+        Cursor cursor = db.rawQuery(query, null);
+        List<Pagina> paginas = new ArrayList<>();
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+        while(!cursor.isAfterLast()){
+            Pagina pagina = new Pagina();
+
+            pagina.setId(cursor.getInt(cursor.getColumnIndex("registro_id")));
+            pagina.setData(LocalDate.parse(cursor.getString(cursor.getColumnIndex("data"))));
+            pagina.setTitulo(cursor.getString(cursor.getColumnIndex("titulo")));
+            pagina.setEmoji(cursor.getString(cursor.getColumnIndex("emoji")));
+            pagina.setConteudo(cursor.getString(cursor.getColumnIndex("conteudo")));
+            paginas.add(pagina);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return paginas;
+    }
+
     @Override
     public PaginaDao open() throws SQLException {
         gDao = new GenericDao(context);

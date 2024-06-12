@@ -11,24 +11,30 @@
         android:id="@+id/btnVoltar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="5dp"
-        android:text="Voltar"
+        android:backgroundTint="@color/black"
+        android:text="@string/voltar"
         app:layout_constraintBottom_toTopOf="@+id/etData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/tmTexto"
-        android:layout_width="393dp"
-        android:layout_height="452dp"
+        android:layout_width="367dp"
+        android:layout_height="450dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="55dp"
+        android:importantForAutofill="no"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/conteudo"
         android:inputType="textMultiLine"
+        android:background="@drawable/edittext_borde"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,50 +42,72 @@
 
     <EditText
         android:id="@+id/etData"
-        android:layout_width="142dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="4dp"
+        android:layout_width="139dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="21dp"
+        android:importantForAutofill="no"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:inputType="date"
-        app:layout_constraintBottom_toTopOf="@+id/imageFilterButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnVoltar" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/imageFilterButton"
-        android:layout_width="45dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/black"
-        app:backgroundTint="@color/green"
-        app:layout_constraintBottom_toTopOf="@+id/edTitulo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etData"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edTitulo"
-        android:layout_width="383dp"
-        android:layout_height="0dp"
+        android:layout_width="365dp"
+        android:layout_height="59dp"
         android:layout_marginTop="161dp"
         android:layout_marginBottom="477dp"
+        android:importantForAutofill="no"
         android:ems="10"
+        android:hint="@string/titulo"
         android:inputType="text"
-        android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/btnSalvar"
-        app:layout_constraintStart_toStartOf="@+id/imageFilterButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnSalvar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="142dp"
+        android:layout_marginStart="40dp"
         android:layout_marginBottom="8dp"
-        android:text="salvar"
+        android:backgroundTint="@color/black"
+        android:text="@string/salvar"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/editar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnExcluir"
+        app:layout_constraintStart_toEndOf="@+id/btnSalvar" />
+
+    <Button
+        android:id="@+id/btnExcluir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/excluir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Spinner
+        android:id="@+id/spEmoji"
+        android:layout_width="105dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTitulo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,18 +41,21 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Person
         holder.tvConteudo.setText(r.getConteudo());
         holder.tvData.setText(String.valueOf(r.getData()));
         holder.tvEmoji.setText(r.getEmoji());
+        holder.tvData.setGravity(Gravity.END);
         if(r instanceof Pagina){
             holder.tvTitulo.setText(((Pagina) r).getTitulo());
         }
         if(r instanceof Nota){
-            holder.tvTitulo.setText(String.valueOf(r.getData()));
-            holder.tvTitulo.setGravity(Gravity.END);
-            holder.tvData.setText(((Nota) r).getHora().toString());
+
+            holder.tvData.setText((r.getData())+" "+((Nota) r).getHora().toString());
         }
     }
 
     @Override
     public int getItemCount() {
+        if(registroList == null){
+            return 0;
+        }
         return registroList.size();
     }
 

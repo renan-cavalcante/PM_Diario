@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class GenericDao extends SQLiteOpenHelper {
     private static final String DATABASE = "DIARIO.DB";
-    private static final int DATABASE_VER = 5;
+    private static final int DATABASE_VER = 6;
 
     private static final String CREATE_TABLE_REGISTRO =
             "CREATE TABLE registro (" +

@@ -40,11 +40,12 @@ public class NotaController  implements  IController<Nota>{
     }
 
     @Override
-    public Nota buscar(Nota nota) throws SQLException {
+    public Nota buscar(int id) throws SQLException {
+        Nota nota;
         if (nDao.open() == null){
             nDao.open();
         }
-        nota = nDao.findById(nota.getId());
+        nota = nDao.findById(id);
         nDao.close();
         return nota;
     }
@@ -55,6 +56,15 @@ public class NotaController  implements  IController<Nota>{
             nDao.open();
         }
         List<Nota> notas = nDao.findAll();
+        nDao.close();
+        return notas;
+    }
+
+    public List<Nota> listarPorData(String data) throws SQLException {
+        if (nDao.open() == null){
+            nDao.open();
+        }
+        List<Nota> notas = nDao.findByData(data);
         nDao.close();
         return notas;
     }

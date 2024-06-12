@@ -1,12 +1,9 @@
 package com.example.pm_diario.controller;
 
 import com.example.pm_diario.model.Pagina;
-import com.example.pm_diario.model.Pagina;
-import com.example.pm_diario.model.Registro;
 import com.example.pm_diario.persistence.PaginaDao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PaginaController implements IController<Pagina>{
@@ -43,11 +40,12 @@ public class PaginaController implements IController<Pagina>{
     }
 
     @Override
-    public Pagina buscar(Pagina pagina) throws SQLException {
+    public Pagina buscar(int id) throws SQLException {
+        Pagina pagina;
         if (pDao.open() == null){
             pDao.open();
         }
-        pagina = pDao.findById(pagina.getId());
+        pagina = pDao.findById(id);
         pDao.close();
         return pagina;
     }
@@ -58,6 +56,16 @@ public class PaginaController implements IController<Pagina>{
             pDao.open();
         }
         List<Pagina> paginas = pDao.findAll();
+        pDao.close();
+        return paginas;
+    }
+
+    @Override
+    public List<Pagina> listarPorData(String data) throws SQLException {
+        if (pDao.open() == null){
+            pDao.open();
+        }
+        List<Pagina> paginas = pDao.findByData(data);
         pDao.close();
         return paginas;
     }

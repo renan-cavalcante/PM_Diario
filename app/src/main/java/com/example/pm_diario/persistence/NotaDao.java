@@ -34,10 +34,6 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
         db.insert("nota",null,contextValuesNota);
     }
 
-
-
-
-
     @Override
     public void update(Nota nota) throws SQLException {
         ContentValues contentValues = getRegistro(nota);
@@ -80,6 +76,30 @@ public class NotaDao implements INotaDao, ICrudDao<Nota>{
     @Override
     public List<Nota> findAll() throws SQLException {
         String query = "SELECT r.*, n.* from registro as r join nota as n on r.id = n.registro_id ORDER BY data DESC";
+        Cursor cursor = db.rawQuery(query, null);
+        List<Nota> notas = new ArrayList<>();
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+        while(!cursor.isAfterLast()){
+            Nota nota = new Nota();
+
+            nota.setId(cursor.getInt(cursor.getColumnIndex("registro_id")));
+            nota.setData(LocalDate.parse(cursor.getString(cursor.getColumnIndex("data"))));
+            nota.setHora(LocalTime.parse(cursor.getString(cursor.getColumnIndex("hora"))));
+            nota.setEmoji(cursor.getString(cursor.getColumnIndex("emoji")));
+            nota.setConteudo(cursor.getString(cursor.getColumnIndex("conteudo")));
+            notas.add(nota);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return notas;
+    }
+
+    @SuppressLint("Range")
+    @Override
+    public List<Nota> findByData(String data) throws SQLException {
+        String query = "SELECT r.*, n.* from registro as r join nota as n on r.id = n.registro_id  where r.data = '"+data.trim()+"' ORDER BY data DESC";
         Cursor cursor = db.rawQuery(query, null);
         List<Nota> notas = new ArrayList<>();
         if(cursor != null){

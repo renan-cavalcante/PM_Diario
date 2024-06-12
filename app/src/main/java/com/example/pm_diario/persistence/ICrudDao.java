@@ -9,4 +9,5 @@ public interface ICrudDao<T> {
     void delete(T t) throws SQLException;
     T findById(int id) throws SQLException;
     List<T> findAll() throws SQLException;
+    List<T> findByData(String data) throws SQLException;
 }

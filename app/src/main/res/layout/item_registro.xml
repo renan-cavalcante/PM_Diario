@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -13,9 +12,10 @@
 
         <TextView
             android:id="@+id/tvData"
-            android:layout_width="110dp"
-            android:layout_height="23dp"
+            android:layout_width="147dp"
+            android:layout_height="22dp"
             android:layout_marginEnd="8dp"
+            android:paddingEnd="32dp"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvTitulo" />
@@ -32,8 +32,8 @@
 
         <TextView
             android:id="@+id/tvTitulo"
-            android:layout_width="218dp"
-            android:layout_height="24dp"
+            android:layout_width="182dp"
+            android:layout_height="21dp"
             android:layout_marginStart="45dp"
             android:layout_marginEnd="17dp"
             app:layout_constraintEnd_toStartOf="@+id/tvData"
@@ -46,9 +46,9 @@
             android:layout_width="29dp"
             android:layout_height="25dp"
             android:layout_marginStart="6dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="246dp"
-            app:layout_constraintEnd_toStartOf="@+id/tvData"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvTitulo"
+            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
